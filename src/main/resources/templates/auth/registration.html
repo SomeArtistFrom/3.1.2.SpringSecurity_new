@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RegistrationNewUser</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/auth/registration}" th:object="${user}">
+
+    <label for="username">Введите имя пользователя: </label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <div style="color:purple" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+
+    <br/>
+
+    <label for="age">Сколько вам полных лет?  </label>
+    <input type="text" th:field="*{age}" id="age"/>
+    <div style="color:purple" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+
+    <br/>
+
+    <label for="password">Введите пароль: </label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <div style="color:purple" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+
+    <br/>
+
+    <input type="submit" value="Зарегистрироваться!"/>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ShowAllUsers</title>
+</head>
+<body>
+Take a look at the list of users:
+<br/>
+<hr/>
+
+<div th:each="user : ${users}">
+    <a th:href="@{/users/{id}(id=${user.getId()})}"
+       th:text="${user.getUsername()+ ' ,  '+user.getAge()+ ' ,  '+user.getProfession()}">user</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="users/new">Create new user!</a>
+
+</body>
+</html>

@@ -5,29 +5,16 @@
     <title>ShowOneUser</title>
 </head>
 <body>
-All information about the user:
+Information about me:
 <br/>
 <hr/>
 
-<p th:text="'User Id: ' + ${user.getId()}">VALUE</p>
 <p th:text="'Name: ' + ${user.getUsername()}">VALUE</p>
 <p th:text="'Age: ' + ${user.getAge()}">VALUE</p>
 <p th:text="'Profession: ' + ${user.getProfession()}">VALUE</p>
 
-
 <br/>
 <hr/>
-
-<p th:text="'Edit the user:'"></p>
-<a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit!</a>
-
-<br/>
-<hr/>
-
-<p th:text="'Delete the user:'"></p>
-<form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
-    <input type="submit" value="Delete!"/>
-</form>
 
 </body>
 </html>

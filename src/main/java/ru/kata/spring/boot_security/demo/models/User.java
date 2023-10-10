@@ -1,8 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
-
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -40,7 +38,6 @@ public class User implements UserDetails {
     private String profession;
 
     @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "role_id")
     private Set<Role> roles;
 
     public User() {
@@ -96,13 +93,9 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : this.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        return authorities;    }
+        return roles;
+    }
 
     public String getPassword() {
         return password;

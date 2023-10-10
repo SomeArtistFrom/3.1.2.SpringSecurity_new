@@ -30,6 +30,15 @@
          th:if="${#fields.hasErrors('profession')}" th:errors="*{profession}">Profession error
     </div>
 
+    <br/>
+
+    <label for="roles">Enter roles: </label>
+    <input type="text" th:field="*{roles}" id="roles"/>
+    <div style="color:orangered"
+         th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Roles error
+    </div>
+
+    <br/>
     <input type="submit" value="Update!"/>
 
 </form>

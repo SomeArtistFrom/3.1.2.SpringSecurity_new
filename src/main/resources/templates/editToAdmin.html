@@ -10,7 +10,7 @@
 
     <label for="username">Enter username: </label>
     <input type="text" th:field="*{username}" id="username"/>
-    <div style="color:orangered"
+    <div style="color:darkblue"
          th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error
     </div>
 
@@ -18,7 +18,7 @@
 
     <label for="age">Enter age: </label>
     <input type="text" th:field="*{age}" id="age"/>
-    <div style="color:orangered"
+    <div style="color:darkblue"
          th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error
     </div>
 
@@ -26,19 +26,27 @@
 
     <label for="profession">Enter profession: </label>
     <input type="text" th:field="*{profession}" id="profession"/>
-    <div style="color:orangered"
+    <div style="color:darkblue"
          th:if="${#fields.hasErrors('profession')}" th:errors="*{profession}">Profession error
     </div>
 
     <br/>
 
+    <label for="password">Enter password: </label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <div style="color:red"
+         th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error
+    </div>
+
+    <br/>
     <label for="roles">Enter roles: </label>
     <input type="text" th:field="*{roles}" id="roles"/>
-    <div style="color:orangered"
+    <div style="color:red"
          th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Roles error
     </div>
 
     <br/>
+
     <input type="submit" value="Update!"/>
 
 </form>

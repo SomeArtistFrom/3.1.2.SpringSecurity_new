@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -15,22 +15,23 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public AdminController(UserService userService) {
-        this.userService = userService;
+    public AdminController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping("/")
     public String printHelloAdmin() {
         return "helloAdmin";
     }
+
     @GetMapping("/showAll")
     public String showAllUsers(
             @RequestParam(name = "count", defaultValue = "-1") int count,
             Model model) {
-        List<User> userList = userService.showAllUsers();
+        List<User> userList = userServiceImpl.showAllUsers();
         if ((count == -1) || (count >= userList.size())) {
             model.addAttribute("users", userList);
         } else {
@@ -38,34 +39,33 @@ public class AdminController {
         }
         return "showAllUsersToAdmin";
     }
+
     @GetMapping("/{id}")
     public String showOneUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.showOneUser(id));
+        model.addAttribute("user", userServiceImpl.showOneUser(id));
         return "showUserInfoToAdmin";
     }
 
 
-//
-
     @GetMapping("/new")
     public String createNewUser(@ModelAttribute("user") User user) {
-        return "createNewUser";
+        return "createNewUserToAdmin";
     }
 
     @PostMapping()
     public String saveNewUser(@ModelAttribute("user") @Valid User user,
                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "createNewUser";
+            return "createNewUserToAdmin";
         }
-        userService.save(user);
-        return "redirect:/admin";
+        userServiceImpl.save(user);
+        return "redirect:/showAllUsersToAdmin";
     }
 
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.showOneUser(id));
+        model.addAttribute("user", userServiceImpl.showOneUser(id));
         return "editToAdmin";
     }
 
@@ -73,22 +73,16 @@ public class AdminController {
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult, @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
-            return "edit";
+            return "editToAdmin";
         }
-        userService.update(id, user);
+        userServiceImpl.update(id, user);
         return "redirect:/showAllUsersToAdmin";
     }
 
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        userService.delete(id);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/get/{userId}")
-    public String getUser(@PathVariable("userId") Integer userId, Model model) {
-        model.addAttribute("allUsers", userService.showOneUser(userId));
-        return "helloAdmin";
+        userServiceImpl.delete(id);
+        return "redirect:/showAllUsersToAdmin";
     }
 }

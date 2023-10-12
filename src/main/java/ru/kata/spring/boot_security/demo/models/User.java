@@ -13,6 +13,8 @@ import java.util.*;
 @Entity
 @Table(name = "table_users")
 public class User implements UserDetails {
+    private User user;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,10 +45,22 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public User(User user) {
+        this.user = user;
+    }
+
     public User(String username, int age, String profession) {
         this.username = username;
         this.age = age;
         this.profession = profession;
+    }
+
+    public User(String username, int age, String password, String profession, Set<Role> roles) {
+        this.username = username;
+        this.age = age;
+        this.password = password;
+        this.profession = profession;
+        this.roles = roles;
     }
 
     public int getId() {
@@ -121,6 +135,9 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public User getUser() {
+        return this.user;
+    }
     @Override
     public String toString() {
         return "User{" +

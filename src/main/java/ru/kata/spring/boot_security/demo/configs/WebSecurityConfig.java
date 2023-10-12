@@ -9,44 +9,44 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.services.MyUserDetailsService;
+import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
 
-    private final UserService userService;
+    private final MyUserDetailsService myUserDetailsService;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, MyUserDetailsService myUserDetailsService) {
         this.successUserHandler = successUserHandler;
-        this.userService = userService;
+        this.myUserDetailsService = myUserDetailsService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                    .authorizeRequests()
-                    .antMatchers("/admin").hasRole("ADMIN")
-                    .antMatchers("/user").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
-                    .anyRequest().authenticated()
+                .authorizeRequests()
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                    .formLogin()
-                    .successHandler(successUserHandler)
-                    .permitAll()
+                .formLogin()
+                .successHandler(successUserHandler)
+                .permitAll()
                 .and()
-                    .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/auth/login")
-                    .permitAll();
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/auth/login")
+                .permitAll();
     }
 
-    //настройка аутентификации
     @Override
     protected void configure(AuthenticationManagerBuilder authManagBuild) throws Exception {
-        authManagBuild.userDetailsService(userService)
+        authManagBuild.userDetailsService(myUserDetailsService)
                 .passwordEncoder(getPasswordEncoder());
     }
 
@@ -54,6 +54,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

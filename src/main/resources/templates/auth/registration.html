@@ -19,6 +19,12 @@
 
     <br/>
 
+    <label for="profession">Какая у вас профессия?  </label>
+    <input type="text" th:field="*{profession}" id="profession"/>
+    <div style="color:purple" th:if="${#fields.hasErrors('profession')}" th:errors="*{profession}">Profession Error</div>
+
+    <br/>
+
     <label for="password">Введите пароль: </label>
     <input type="password" th:field="*{password}" id="password"/>
     <div style="color:purple" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>

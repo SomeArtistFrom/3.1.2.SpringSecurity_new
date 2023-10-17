@@ -4,16 +4,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.*;
 
 @Entity
 @Table(name = "table_users")
 public class User implements UserDetails {
-    private User user;
 
     @Id
     @Column(name = "id")
@@ -25,9 +21,10 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String username;
 
-    @NotEmpty(message = "age should not be empty")
-    @Min(value = 14, message = "you need > 14 years")
-    @Max(value = 150, message = "you need < 150 years")
+    @NotNull(message = "age should not be empty")
+//    @Size(min = 14, max = 125, message = "age should be >= 14 and <=125 years")
+    @Min(value = 14, message = "age should be >= 14")
+    @Max(value = 125, message = "age should be <= 125")
     @Column(name = "age")
     private int age;
 
@@ -40,13 +37,12 @@ public class User implements UserDetails {
     private String profession;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "table_users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
-    }
-
-    public User(User user) {
-        this.user = user;
     }
 
     public User(String username, int age, String profession) {
@@ -135,9 +131,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public User getUser() {
-        return this.user;
-    }
     @Override
     public String toString() {
         return "User{" +

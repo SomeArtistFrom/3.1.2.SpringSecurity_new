@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -15,11 +15,11 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @Autowired
-    public AdminController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public AdminController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -31,7 +31,7 @@ public class AdminController {
     public String showAllUsers(
             @RequestParam(name = "count", defaultValue = "-1") int count,
             Model model) {
-        List<User> userList = userServiceImpl.showAllUsers();
+        List<User> userList = userService.showAllUsers();
         if ((count == -1) || (count >= userList.size())) {
             model.addAttribute("users", userList);
         } else {
@@ -42,7 +42,7 @@ public class AdminController {
 
     @GetMapping("/{id}")
     public String showOneUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userServiceImpl.showOneUser(id));
+        model.addAttribute("user", userService.showOneUser(id));
         return "showUserInfoToAdmin";
     }
 
@@ -58,14 +58,14 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "createNewUserToAdmin";
         }
-        userServiceImpl.save(user);
+        userService.save(user);
         return "redirect:/showAllUsersToAdmin";
     }
 
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userServiceImpl.showOneUser(id));
+        model.addAttribute("user", userService.showOneUser(id));
         return "editToAdmin";
     }
 
@@ -75,14 +75,14 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "editToAdmin";
         }
-        userServiceImpl.update(id, user);
+        userService.update(id, user);
         return "redirect:/showAllUsersToAdmin";
     }
 
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        userServiceImpl.delete(id);
+        userService.delete(id);
         return "redirect:/showAllUsersToAdmin";
     }
 }

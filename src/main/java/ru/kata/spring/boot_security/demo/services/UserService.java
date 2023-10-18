@@ -3,9 +3,11 @@ package ru.kata.spring.boot_security.demo.services;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,20 +32,22 @@ public class UserService {
     }
 
     @Transactional
-    public void save(User user) {
+    public boolean save(User user) {
+        Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
+
+        if (userFromDB != null) {
+            return false;
+        }
+
+        user.setRoles(Collections.singleton(new Role(2, "ROLE_USER")));
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
+        return true;
     }
-
-//    @Transactional
-//    public void save(User user) {
-//        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-//        userRepository.save(user);
-//    }
-
 
     @Transactional
     public void update(int id, User updatedUser) {
-        updatedUser.setId(id);
+        updatedUser.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
         userRepository.save(updatedUser);
     }
 

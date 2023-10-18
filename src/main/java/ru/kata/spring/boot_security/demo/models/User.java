@@ -22,7 +22,6 @@ public class User implements UserDetails {
     private String username;
 
     @NotNull(message = "age should not be empty")
-//    @Size(min = 14, max = 125, message = "age should be >= 14 and <=125 years")
     @Min(value = 14, message = "age should be >= 14")
     @Max(value = 125, message = "age should be <= 125")
     @Column(name = "age")

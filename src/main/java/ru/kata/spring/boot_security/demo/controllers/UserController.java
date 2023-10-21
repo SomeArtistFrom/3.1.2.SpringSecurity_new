@@ -22,7 +22,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
     public String showUserInfoToUser(){
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();

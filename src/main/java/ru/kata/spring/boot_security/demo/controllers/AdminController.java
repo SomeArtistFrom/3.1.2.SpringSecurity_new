@@ -23,13 +23,11 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/")
     public String printHelloAdmin() {
         return "helloAdmin";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/showAll")
     public String showAllUsers(
             @RequestParam(name = "count", defaultValue = "-1") int count,
@@ -43,20 +41,17 @@ public class AdminController {
         return "showAllUsersToAdmin";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public String showOneUser(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.showOneUser(id));
         return "showUserInfoToAdmin";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/new")
     public String createNewUser(@ModelAttribute("user") User user) {
         return "createNewUserToAdmin";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
     public String saveNewUser(@ModelAttribute("user") @Valid User user,
                               BindingResult bindingResult) {
@@ -68,14 +63,12 @@ public class AdminController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.showOneUser(id));
         return "editToAdmin";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult, @PathVariable("id") int id) {
@@ -86,7 +79,6 @@ public class AdminController {
         return "redirect:/showAllUsersToAdmin";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.delete(id);

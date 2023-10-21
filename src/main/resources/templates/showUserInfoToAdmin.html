@@ -24,12 +24,14 @@ All information about the user:
 
 <p th:text="'Edit the user:'"></p>
 <a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit!</a>
+<!--<a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit!</a>-->
 
 <br/>
 <hr/>
 
 <p th:text="'Delete the user:'"></p>
 <form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
+<!--<form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">-->
     <input type="submit" value="Delete!"/>
 </form>
 

@@ -30,6 +30,7 @@ public class DatabaseInitializer {
 
         Role adminR = new Role(1, "ROLE_ADMIN");
         Role userR = new Role(2, "ROLE_USER");
+
         Set<Role> adminRoles = new HashSet<>();
         Set<Role> userRoles = new HashSet<>();
 
@@ -41,17 +42,15 @@ public class DatabaseInitializer {
 
         userRoles.add(userR);
 
-        String rawUser = "user";
-        String rawAdmin = "admin";
+        String rawUser = "u";
+        String rawAdmin = "a";
         String encodedUser = passwordEncoder.encode(rawUser);
         String encodedAdmin = passwordEncoder.encode(rawAdmin);
 
-        User user = new User("user", 28, encodedUser, "UserPr", userRoles);
-        User admin = new User("admin", 89, encodedAdmin, "AdminPr", adminRoles);
+        User user = new User("user", 28, encodedUser, "UserProf", userRoles);
+        User admin = new User("admin", 89, encodedAdmin, "AdminProf", adminRoles);
 
-        System.out.println(user);
         userRepository.save(user);
-        System.out.println(admin);
         userRepository.save(admin);
     }
 }

@@ -17,15 +17,18 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @NotEmpty(message = "role should not be empty")
-//    @Size(min = 2, max = 30, message = "role should be > 2 and < 30 char")
     @Column(name = "name")
     private String name;
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    public Role(int i, String roleUser) {
+    public Role() {
+    }
+
+    public Role(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     @Override

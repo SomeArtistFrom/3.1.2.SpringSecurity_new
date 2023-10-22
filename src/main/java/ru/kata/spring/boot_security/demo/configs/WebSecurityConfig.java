@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kata.spring.boot_security.demo.services.MyUserDetailsService;
@@ -33,9 +34,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/user").hasAnyRole("ADMIN", "USER")
                     .antMatchers("/","/login").permitAll()
                     .anyRequest().authenticated()
+//                .and()
+//                    .formLogin()
+//                    .successHandler(successUserHandler)
+//                    .permitAll()
                 .and()
                     .formLogin()
-                    .successHandler(successUserHandler)
+                    .successHandler((request, response, authentication) -> {
+                        if (authentication != null) {
+                            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                                if (authority.getAuthority().equals("ROLE_USER")) {
+                                    response.sendRedirect("/user");
+                                    return;
+                                } else if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                                    response.sendRedirect("/admin");
+                                    return;
+                                }
+                            }
+                        }
+                        response.sendRedirect("/error");
+                    })
                     .permitAll()
                 .and()
                     .logout()

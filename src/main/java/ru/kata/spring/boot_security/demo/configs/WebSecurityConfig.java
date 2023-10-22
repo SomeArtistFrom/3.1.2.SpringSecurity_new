@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 }
                             }
                         }
-                        response.sendRedirect("/error");
+                        response.sendRedirect("/");
                     })
                     .permitAll()
                 .and()

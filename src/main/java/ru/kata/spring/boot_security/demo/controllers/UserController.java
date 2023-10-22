@@ -29,7 +29,7 @@ public class UserController {
         User user= (User) authentication.getPrincipal();
 
         model.addAttribute("user", userService.showOneUser(user.getId()));
-        System.out.println(user.toString());
+        //System.out.println(user.toString());
         return "showUserInfoToUser";
     }
 }

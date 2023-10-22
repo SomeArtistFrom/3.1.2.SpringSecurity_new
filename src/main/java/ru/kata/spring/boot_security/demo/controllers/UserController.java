@@ -27,7 +27,7 @@ public class UserController {
     public String showUserInfoToUser(Model model){
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         User user= (User) authentication.getPrincipal();
-       // User user = userService.findUserByUsername(principal.getName());
+
         model.addAttribute("user", userService.showOneUser(user.getId()));
         System.out.println(user.toString());
         return "showUserInfoToUser";

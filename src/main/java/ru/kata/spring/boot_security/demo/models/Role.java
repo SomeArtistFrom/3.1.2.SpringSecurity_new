@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
-//@Data
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id

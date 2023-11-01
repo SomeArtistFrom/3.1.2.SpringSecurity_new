@@ -5,20 +5,23 @@
     <title>ShowAllUsers</title>
 </head>
 <body>
-Take a look at the list of users:
+<h3>Take a look at the list of users:</h3>
+
 <br/>
 <hr/>
 
 <div th:each="user : ${users}">
-    <a th:href="@{/users/{id}(id=${user.getId()})}">
-<!--    <a th:href="@{/admin/{id}(id=${user.getId()})}"-->
-       th:text="${user.getUsername()+ ' ,  '+user.getAge()+ ' ,  '+user.getProfession()}">user</a>
+    <a th:href="@{users/{id}(id=${user.getId()})}"
+       th:text="${user.getUsername()+ ' ,  '+
+                  user.getAge()+ ' ,  '+
+                  user.getProfession()}">user</a>
 </div>
 
 <br/>
 <hr/>
 
-<a href="users/new">Create new user!</a>
+<a href="/admin/new">Create new user!</a>
+
 <br/>
 <hr/>
 

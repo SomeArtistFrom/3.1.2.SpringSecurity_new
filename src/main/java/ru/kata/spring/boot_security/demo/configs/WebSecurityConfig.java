@@ -34,26 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/user").hasAnyRole("ADMIN", "USER")
                     .antMatchers("/","/login").permitAll()
                     .anyRequest().authenticated()
-//                .and()
-//                    .formLogin()
-//                    .successHandler(successUserHandler)
-//                    .permitAll()
                 .and()
                     .formLogin()
-                    .successHandler((request, response, authentication) -> {
-                        if (authentication != null) {
-                            for (GrantedAuthority authority : authentication.getAuthorities()) {
-                                if (authority.getAuthority().equals("ROLE_USER")) {
-                                    response.sendRedirect("/user");
-                                    return;
-                                } else if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                                    response.sendRedirect("/admin");
-                                    return;
-                                }
-                            }
-                        }
-                        response.sendRedirect("/");
-                    })
+                    .successHandler(successUserHandler)
                     .permitAll()
                 .and()
                     .logout()

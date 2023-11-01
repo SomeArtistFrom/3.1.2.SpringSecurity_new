@@ -6,12 +6,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
-@Data
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
@@ -20,19 +19,20 @@ public class User implements UserDetails {
     private int id;
 
     @Column(name = "username")
+    @NotNull
     private String username;
 
     @Column(name = "age")
     private int age;
 
     @Column(name = "password")
+    @NotNull
     private String password;
 
     @Column(name = "profession")
     private String profession;
 
-    //    @ManyToMany(fetch = FetchType.EAGER)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -41,17 +41,61 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.username = username;
-        this.password = password;
-        authorities = getAuthorities();
-    }
-
     public User(String username, int age, String password, String profession, Set<Role> roles) {
         this.username = username;
         this.age = age;
         this.password = password;
         this.profession = profession;
+        this.roles = roles;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -79,4 +123,12 @@ public class User implements UserDetails {
         return roles;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", age=" + age +
+                ", profession='" + profession + '\'' +
+                '}';
+    }
 }

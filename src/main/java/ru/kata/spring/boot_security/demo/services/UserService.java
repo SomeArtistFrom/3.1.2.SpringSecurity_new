@@ -19,12 +19,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    @Transactional(readOnly = true)
+
     public List<User> showAllUsers() {
         return userRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     public User showOneUser(int id) {
         Optional<User> findOneUserById = userRepository.findById(id);
         return findOneUserById.orElse(null);
@@ -32,35 +31,68 @@ public class UserService {
 
     @Transactional
     public void save(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        userRepository.save(user);
+        User userFromDB = userRepository.findByUsername(user.getUsername());
+
+        if (userFromDB != null) {
+            System.out.println("Пользователь с таким именем уже есть в базе");
+        } else {
+            userRepository.save(user);
+        }
     }
 
     @Transactional
     public void update(int id, User updatedUser) {
-        updatedUser.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
+        updatedUser.setId(id);
         userRepository.save(updatedUser);
     }
 
     @Transactional
-    public boolean delete(int id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void delete(int id) {
+        userRepository.deleteById(id);
     }
-
 }
 
+//    @Transactional(readOnly = true)
+//    public List<User> showAllUsers() {
+//        return userRepository.findAll();
+//    }
+//
+//    @Transactional(readOnly = true)
+//    public User showOneUser(int id) {
+//        Optional<User> findOneUserById = userRepository.findById(id);
+//        return findOneUserById.orElse(null);
+//    }
+//
 //    @Transactional
-//    public boolean save(User user) {
-//        Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
+//    public void save(User user) {
+//        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+//        userRepository.save(user);
+//    }
 //
-//        if (userFromDB != null) {
-//            return false;
+//    @Transactional
+//    public void update(int id, User updatedUser) {
+//        updatedUser.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
+//        userRepository.save(updatedUser);
+//    }
+//
+//    @Transactional
+//    public boolean delete(int id) {
+//        if (userRepository.findById(id).isPresent()) {
+//            userRepository.deleteById(id);
+//            return true;
 //        }
+//        return false;
+//    }
+//}
 //
+////    @Transactional
+////    public boolean save(User user) {
+////        Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
+////
+////        if (userFromDB != null) {
+////            return false;
+////        }
+////
 //        user.setRoles(Collections.singleton(new Role(2, "ROLE_USER")));
 //        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 //        userRepository.save(user);

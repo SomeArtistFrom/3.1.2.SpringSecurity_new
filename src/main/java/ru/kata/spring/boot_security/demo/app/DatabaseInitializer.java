@@ -49,8 +49,12 @@ public class DatabaseInitializer {
 
         User user = new User("user", 28, encodedUser, "UserProf", userRoles);
         User admin = new User("admin", 89, encodedAdmin, "AdminProf", adminRoles);
+        User irina = new User("irina", 29, encodedUser, "Artist", userRoles);
+        User test = new User("test", 100, encodedUser, "Test", userRoles);
 
         userRepository.save(user);
         userRepository.save(admin);
+        userRepository.save(irina);
+        userRepository.save(test);
     }
 }

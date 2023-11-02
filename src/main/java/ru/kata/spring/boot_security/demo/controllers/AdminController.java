@@ -61,7 +61,6 @@ public class AdminController {
         return "redirect:/admin/showAll";
     }
 
-
     @GetMapping("/users/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.showOneUser(id));

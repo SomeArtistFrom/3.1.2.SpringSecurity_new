@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,15 +19,15 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty(message = "Имя не должно быть пустым")
     @Column(name = "username")
-    @NotNull
     private String username;
 
     @Column(name = "age")
     private int age;
 
+    @NotEmpty(message = "Пароль не должен быть пустым")
     @Column(name = "password")
-    @NotNull
     private String password;
 
     @Column(name = "profession")
